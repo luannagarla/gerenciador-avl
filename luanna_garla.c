@@ -609,13 +609,6 @@ void exibirArvoreGrafica(PONT raiz)
             PONT atual = fila[inicio];
             int nivelNo = nivel[inicio++];
 
-            // Segurança extra
-            if (atual == NULL)
-            {
-                printf("   "); // espaço vazio
-                continue;
-            }
-
             printf("%d", atual->chave);
 
             for (int i = 0; i < espacos * 2 - 2; i++)
@@ -645,6 +638,32 @@ void exibirArvoreGrafica(PONT raiz)
 // Listar em um intervalo [a,b]
 void listarIntervalo(PONT raiz, int a, int b)
 {
+}
+
+// Contagem das folhas
+int contagemFolhas(PONT raiz)
+{
+    if (raiz == NULL)
+        return 0;
+
+    int qtdFolhas = 0;
+
+    if (raiz->dir == NULL && raiz->esq == NULL)
+        qtdFolhas++;
+
+    somaValores(raiz->esq);
+    somaValores(raiz->dir);
+
+    return qtdFolhas;
+}
+
+// Soma de valores
+int somaValores(PONT raiz)
+{
+    if (raiz == NULL)
+        return 0;
+
+    return raiz->chave + somaValores(raiz->esq) + somaValores(raiz->dir);
 }
 
 void FuncoesObrigatorias(PONT *raiz)
@@ -728,21 +747,25 @@ void FuncoesObrigatorias(PONT *raiz)
 
 void FuncoesAdicionais(PONT raiz)
 {
-    printf("\n=============== funções adicionais  ===============\n");
+    printf("\n\n\n=============== funções adicionais  ===============\n");
 
     // listagem de elementos no intervalo
-    printf("\nListar em um intervalo (10-29):\n");
-    listarIntervalo(raiz, 10, 29);
+    // printf("\nListar em um intervalo (10-29):\n");
+    // listarIntervalo(raiz, 10, 29);
 
     // contar folhas
+    // int qtdF = contagemFolhas(raiz);
+    // printf("\nO número de folhas é igual a %d: ", qtdF);
 
-    // entrar menor e maior valor
+    // encontrar menor e maior valor
 
     // buscar K-esimo valor
 
     // verifica se dois valores estão no mesmo nível
 
     // soma valores da árvore
+    int soma = somaValores(raiz);
+    printf("\nA soma dos valores é igual a %d: ", soma);
 }
 
 int main()
