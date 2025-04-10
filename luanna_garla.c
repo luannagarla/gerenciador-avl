@@ -661,6 +661,29 @@ int somaValores(PONT raiz)
     return raiz->chave + somaValores(raiz->esq) + somaValores(raiz->dir);
 }
 
+//Achar o menor e maior valor
+int getMenorValor(PONT raiz)
+{
+    if (raiz == NULL)
+        return;
+
+    while (raiz->esq != NULL)
+        raiz = raiz->esq;
+
+    return raiz->chave;
+}
+
+int getMaiorValor(PONT raiz)
+{
+    if (raiz == NULL)
+        return;
+
+    while (raiz->dir != NULL)
+        raiz = raiz->dir;
+
+    return raiz->chave;
+}
+
 void FuncoesObrigatorias(PONT *raiz)
 {
     printf("=============== INÍCIO DOS TESTES ===============\n");
@@ -747,12 +770,17 @@ void FuncoesAdicionais(PONT *raiz)
     // listagem de elementos no intervalo
     // printf("\nListar em um intervalo (10-29):\n");
     // listarIntervalo(raiz, 10, 29);
-    
+
     // contar folhas
     int qtdF = contagemFolhas(*raiz);
-    printf("\nO número de folhas é igual a %d.", qtdF);
+    printf("\n- O número de folhas é igual a %d.", qtdF);
 
     // encontrar menor e maior valor
+    int menor = getMenorValor(*raiz);
+    printf("\n- O menor valor é igual a %d.", menor);
+
+    int maior = getMaiorValor(*raiz);
+    printf("\n- O maior valor é igual a %d.", maior);
 
     // buscar K-esimo valor
 
@@ -760,7 +788,7 @@ void FuncoesAdicionais(PONT *raiz)
 
     // soma valores da árvore
     int soma = somaValores(*raiz);
-    printf("\nA soma dos valores é igual a %d.", soma);
+    printf("\n- A soma dos valores é igual a %d.", soma);
 }
 
 int main()
