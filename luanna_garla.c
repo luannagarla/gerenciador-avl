@@ -16,7 +16,7 @@ typedef struct aux
     TIPOCHAVE chave;
     struct aux *esq;
     struct aux *dir;
-    int bal; // fator de balanceamento (0, -1 ou +1) => alt. direita - alt. esquerda
+    int bal;
 } NO, *PONT;
 
 #pragma region Já existiam
@@ -455,23 +455,24 @@ void inicializar(PONT *raiz)
 bool verificaAVL(PONT p)
 {
     int e, d;
-    bool ok = true;
+    bool isAVL = true;
     if (p)
     {
-        ok = verificaAVL(p->esq);
-        if (ok)
-            ok = verificaAVL(p->dir);
-        if (ok)
+        isAVL = verificaAVL(p->esq);
+        if (isAVL)
+            isAVL = verificaAVL(p->dir);
+        if (isAVL)
         {
             e = altura(p->esq);
             d = altura(p->dir);
             if (e - d > 1 || e - d < -1)
-                ok = false;
+                isAVL = false;
             else
-                ok = true;
+                isAVL = true;
         }
     }
-    return (ok);
+
+    return (isAVL);
 }
 
 // Contagem dos nós
@@ -480,6 +481,97 @@ int contagemNos(PONT p)
     if (p == NULL) // árvore vazia
         return 0;
     return 1 + contagemNos(p->esq) + contagemNos(p->dir);
+}
+
+// Exibição por nível
+void exibirArvorePorNivel(PONT raiz)
+{
+    if (raiz == NULL)
+        return;
+
+    PONT fila[100]; // fila auxiliar
+    int nivel[100];
+    int inicio = 0;
+    int fim = 0;
+
+    fila[fim] = raiz;
+    nivel[fim++] = 0;
+
+    int nivelAtual = 0;
+    printf("\nNível %d: ", nivelAtual);
+
+    while (inicio < fim)
+    {
+        PONT atual = fila[inicio];
+        int nivelNo = nivel[inicio++];
+
+        if (nivelNo != nivelAtual)
+        {
+            nivelAtual = nivelNo;
+            printf("\nNível %d: ", nivelAtual);
+        }
+
+        printf("%d ", atual->chave);
+
+        if (atual->esq != NULL)
+        {
+            fila[fim] = atual->esq;
+            nivel[fim++] = nivelNo + 1;
+        }
+
+        if (atual->dir != NULL)
+        {
+            fila[fim] = atual->dir;
+            nivel[fim++] = nivelNo + 1;
+        }
+    }
+
+    printf("\n");
+}
+
+// Exibição de um nível, dado um nó
+int getNivelPorNo(PONT raiz, int chave)
+{
+    if (raiz == NULL)
+        return;
+
+    PONT fila[100];
+    int nivel[100];
+    int inicio = 0;
+    int fim = 0;
+
+    fila[fim] = raiz;
+    nivel[fim++] = 0;
+
+    int nivelAtual = 0;
+
+    while (inicio < fim)
+    {
+        PONT atual = fila[inicio];
+        int nivelNo = nivel[inicio++];
+
+        if (nivelNo != nivelAtual)
+        {
+            nivelAtual = nivelNo;
+        }
+
+        if (atual->chave == chave)
+            return nivelAtual;
+
+        if (atual->esq != NULL)
+        {
+            fila[fim] = atual->esq;
+            nivel[fim++] = nivelNo + 1;
+        }
+
+        if (atual->dir != NULL)
+        {
+            fila[fim] = atual->dir;
+            nivel[fim++] = nivelNo + 1;
+        }
+    }
+
+    printf("\n");
 }
 
 void FuncoesObrigatorias(PONT *raiz)
@@ -494,6 +586,10 @@ void FuncoesObrigatorias(PONT *raiz)
     inserirAVL(raiz, 3, &alterou);
     inserirAVL(raiz, 19, &alterou);
     inserirAVL(raiz, 7, &alterou);
+    inserirAVL(raiz, 1, &alterou);
+    inserirAVL(raiz, 70, &alterou);
+    inserirAVL(raiz, 13, &alterou);
+    inserirAVL(raiz, 45, &alterou);
 
     // Exclusão
     excluirAVL(raiz, 21, &alterou);
@@ -518,9 +614,10 @@ void FuncoesObrigatorias(PONT *raiz)
     // Exibir em ordem
     printf("\nÁrvore em ordem: ");
     exibirArvoreEmOrdem(*raiz);
-    printf("\n");
 
-    // Exibir em nível (largura)
+    // Exibir em nível
+    printf("\nÁrvore por nível: ");
+    exibirArvorePorNivel(*raiz);
 
     // Impressão gráfica
 
@@ -539,6 +636,9 @@ void FuncoesObrigatorias(PONT *raiz)
         printf("A árvore não é uma AV.!\n");
 
     // Impressão do nível de um nó
+    int valor = 29;
+    int nivel = getNivelPorNo(*raiz, valor);
+    printf("Nível do nó %d é %d", valor, nivel);
 }
 
 int main()
