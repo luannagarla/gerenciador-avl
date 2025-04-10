@@ -601,7 +601,6 @@ void exibirArvoreGrafica(PONT raiz)
             i++;
         }
 
-        // espaços no console para dar uma impressão mais gráfica
         for (int i = 0; i < espacos; i++)
             printf(" ");
 
@@ -610,19 +609,21 @@ void exibirArvoreGrafica(PONT raiz)
             PONT atual = fila[inicio];
             int nivelNo = nivel[inicio++];
 
-            printf("%d", atual->chave); // imprime valor
+            // Segurança extra
+            if (atual == NULL)
+            {
+                printf("   "); // espaço vazio
+                continue;
+            }
+
+            printf("%d", atual->chave);
 
             for (int i = 0; i < espacos * 2 - 2; i++)
-                printf(" "); // espaço entre os valores
+                printf(" ");
 
             if (atual->esq != NULL)
             {
                 fila[fim] = atual->esq;
-                nivel[fim++] = nivelNo + 1;
-            }
-            else
-            {
-                fila[fim] = NULL;
                 nivel[fim++] = nivelNo + 1;
             }
 
@@ -631,19 +632,19 @@ void exibirArvoreGrafica(PONT raiz)
                 fila[fim] = atual->dir;
                 nivel[fim++] = nivelNo + 1;
             }
-            else
-            {
-                fila[fim] = NULL;
-                nivel[fim++] = nivelNo + 1;
-            }
         }
 
         printf("\n");
-        espacos /= 2; // reduz o espaçamento para o próximo nível
+        espacos /= 2;
         nivelAtual++;
     }
 
     printf("\n");
+}
+
+// Listar em um intervalo [a,b]
+void listarIntervalo(PONT raiz, int a, int b)
+{
 }
 
 void FuncoesObrigatorias(PONT *raiz)
@@ -675,14 +676,14 @@ void FuncoesObrigatorias(PONT *raiz)
     // Busca
     PONT pai;
     PONT resultado = buscaNo(*raiz, 29, &pai);
-    
+
     printf("\nTeste de busca:");
     if (resultado)
     {
         if (pai)
-            printf("\nNó %d encontrado (pai: %d)\n", resultado->chave, pai->chave);
+            printf("\nNó %d encontrado (pai: %d).\n", resultado->chave, pai->chave);
         else
-            printf("\nNó %d encontrado (sem pai - é a raiz)\n", resultado->chave);
+            printf("\nNó %d encontrado (sem pai).\n", resultado->chave);
     }
     else
     {
@@ -704,17 +705,17 @@ void FuncoesObrigatorias(PONT *raiz)
 
     // Cálculo da altura
     int alt = altura(*raiz);
-    printf("\nAltura da árvore igual a %d\n", alt);
+    printf("\nAltura da árvore igual a %d.\n", alt);
 
     // Contagem dos nós
     int qtdNos = contagemNos(*raiz);
-    printf("\nNúmeros de nós igual a %d\n", qtdNos);
+    printf("\nNúmeros de nós igual a %d.\n", qtdNos);
 
     // Verificação AVL
     if (verificaAVL(*raiz))
         printf("A árvore é uma AVL.\n");
     else
-        printf("A árvore não é uma AV.!\n");
+        printf("A árvore não é uma AVL.!\n");
 
     // Impressão do nível de um nó
     int valor = 29;
@@ -725,10 +726,31 @@ void FuncoesObrigatorias(PONT *raiz)
         printf("Nó não encontrado.");
 }
 
+void FuncoesAdicionais(PONT raiz)
+{
+    printf("\n=============== funções adicionais  ===============\n");
+
+    // listagem de elementos no intervalo
+    printf("\nListar em um intervalo (10-29):\n");
+    listarIntervalo(raiz, 10, 29);
+
+    // contar folhas
+
+    // entrar menor e maior valor
+
+    // buscar K-esimo valor
+
+    // verifica se dois valores estão no mesmo nível
+
+    // soma valores da árvore
+}
+
 int main()
 {
     PONT raiz;
     inicializar(&raiz);
     FuncoesObrigatorias(&raiz);
+    FuncoesAdicionais(&raiz);
+
     return 0;
 }
