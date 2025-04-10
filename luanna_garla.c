@@ -646,15 +646,10 @@ int contagemFolhas(PONT raiz)
     if (raiz == NULL)
         return 0;
 
-    int qtdFolhas = 0;
+    if (raiz->esq == NULL && raiz->dir == NULL)
+        return 1;
 
-    if (raiz->dir == NULL && raiz->esq == NULL)
-        qtdFolhas++;
-
-    somaValores(raiz->esq);
-    somaValores(raiz->dir);
-
-    return qtdFolhas;
+    return contagemFolhas(raiz->esq) + contagemFolhas(raiz->dir);
 }
 
 // Soma de valores
@@ -745,17 +740,17 @@ void FuncoesObrigatorias(PONT *raiz)
         printf("Nó não encontrado.");
 }
 
-void FuncoesAdicionais(PONT raiz)
+void FuncoesAdicionais(PONT *raiz)
 {
     printf("\n\n\n=============== funções adicionais  ===============\n");
 
     // listagem de elementos no intervalo
     // printf("\nListar em um intervalo (10-29):\n");
     // listarIntervalo(raiz, 10, 29);
-
+    
     // contar folhas
-    // int qtdF = contagemFolhas(raiz);
-    // printf("\nO número de folhas é igual a %d: ", qtdF);
+    int qtdF = contagemFolhas(*raiz);
+    printf("\nO número de folhas é igual a %d.", qtdF);
 
     // encontrar menor e maior valor
 
@@ -764,8 +759,8 @@ void FuncoesAdicionais(PONT raiz)
     // verifica se dois valores estão no mesmo nível
 
     // soma valores da árvore
-    int soma = somaValores(raiz);
-    printf("\nA soma dos valores é igual a %d: ", soma);
+    int soma = somaValores(*raiz);
+    printf("\nA soma dos valores é igual a %d.", soma);
 }
 
 int main()
