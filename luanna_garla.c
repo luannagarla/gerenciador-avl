@@ -589,7 +589,7 @@ void exibirArvoreGrafica(PONT raiz)
     nivel[fim++] = 0;
 
     int nivelAtual = 0;
-    int espacos = 20; 
+    int espacos = 20;
 
     while (inicio < fim)
     {
@@ -602,18 +602,19 @@ void exibirArvoreGrafica(PONT raiz)
         }
 
         // espaços no console para dar uma impressão mais gráfica
-        for (int i = 0; i < espacos; i++) printf(" ");
+        for (int i = 0; i < espacos; i++)
+            printf(" ");
 
         for (int j = 0; j < elementosNesteNivel; j++)
         {
             PONT atual = fila[inicio];
             int nivelNo = nivel[inicio++];
 
-            printf("%2d", atual->chave);  // imprime a chave
+            printf("%d", atual->chave); // imprime valor
 
-            for (int i = 0; i < espacos * 2 - 2; i++) printf(" ");
+            for (int i = 0; i < espacos * 2 - 2; i++)
+                printf(" "); // espaço entre os valores
 
-            // Enfileira os filhos com o próximo nível
             if (atual->esq != NULL)
             {
                 fila[fim] = atual->esq;
@@ -638,7 +639,7 @@ void exibirArvoreGrafica(PONT raiz)
         }
 
         printf("\n");
-        espacos /= 2;  // reduz o espaçamento para o próximo nível
+        espacos /= 2; // reduz o espaçamento para o próximo nível
         nivelAtual++;
     }
 
@@ -647,9 +648,11 @@ void exibirArvoreGrafica(PONT raiz)
 
 void FuncoesObrigatorias(PONT *raiz)
 {
+    printf("=============== INÍCIO DOS TESTES ===============\n");
     bool alterou;
 
     // Inserção
+    printf("\nInserindo os valores 29, 56, 21, 8, 3, 19, 7, 1, 10, 13, 45\n");
     inserirAVL(raiz, 29, &alterou);
     inserirAVL(raiz, 56, &alterou);
     inserirAVL(raiz, 21, &alterou);
@@ -663,13 +666,17 @@ void FuncoesObrigatorias(PONT *raiz)
     inserirAVL(raiz, 45, &alterou);
 
     // Exclusão
+    printf("\nExlcuindo os valores 21, 56\n");
     excluirAVL(raiz, 21, &alterou);
     excluirAVL(raiz, 56, &alterou);
+
+    printf("\n=============== funções obrigatórias  ===============\n");
 
     // Busca
     PONT pai;
     PONT resultado = buscaNo(*raiz, 29, &pai);
-
+    
+    printf("\nTeste de busca:");
     if (resultado)
     {
         if (pai)
@@ -687,7 +694,7 @@ void FuncoesObrigatorias(PONT *raiz)
     exibirArvoreEmOrdem(*raiz);
 
     // Exibir em nível
-    printf("\nÁrvore por nível: ");
+    printf("\n\nÁrvore por nível: ");
     exibirArvorePorNivel(*raiz);
 
     // Impressão gráfica
@@ -712,7 +719,7 @@ void FuncoesObrigatorias(PONT *raiz)
     // Impressão do nível de um nó
     int valor = 29;
     int nivel = getNivelPorNo(*raiz, valor);
-    if(nivel == -1)
+    if (nivel == -1)
         printf("Nível do nó %d é igual a %d.", valor, nivel);
     else
         printf("Nó não encontrado.");
