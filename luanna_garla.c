@@ -1,9 +1,6 @@
 /******************************************************************************/
-/*              Este programa gerencia arvores AVL                            */
-/*  Arvores AVL sao arvores balanceadas na altura.                            */
-/*  O nome AVL vem de seus criadores Adelson Velsky e Landis, cuja primeira   */
-/*    referência encontra-se no documento "Algoritmos para organização da     */
-/*    informação" de 1962.                                                    */
+/*              Programa de gerenciamento de árvores AVL                      */
+/*                  Aluna: Luanna Garla | TURMA 2000.                         */
 /******************************************************************************/
 
 #include <stdio.h>
@@ -20,6 +17,8 @@ typedef struct aux {
 	struct aux *dir;
 	int bal; // fator de balanceamento (0, -1 ou +1) => alt. direita - alt. esquerda
 } NO, *PONT;
+
+//#pragma region Já existiam
 
 /* cria um novo (aloca memoria e preenche valores) no com chave=ch e retorna 
        seu endereco */
@@ -382,6 +381,8 @@ void destruirArvore(PONT * raiz){
 void inicializar(PONT * raiz){
 	*raiz = NULL;
 }
+
+//#pragma endregion Já existiam
 
 bool verificaAVL(PONT p){
 	int e,d;
