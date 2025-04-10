@@ -641,7 +641,7 @@ void listarIntervalo(PONT raiz, int a, int b)
 }
 
 // Contagem das folhas
-int contagemFolhas(PONT raiz)
+int contarFolhas(PONT raiz)
 {
     if (raiz == NULL)
         return 0;
@@ -649,7 +649,7 @@ int contagemFolhas(PONT raiz)
     if (raiz->esq == NULL && raiz->dir == NULL)
         return 1;
 
-    return contagemFolhas(raiz->esq) + contagemFolhas(raiz->dir);
+    return contarFolhas(raiz->esq) + contarFolhas(raiz->dir);
 }
 
 // Soma de valores
@@ -662,7 +662,7 @@ int somaValores(PONT raiz)
 }
 
 //Achar o menor e maior valor
-int getMenorValor(PONT raiz)
+int encontrarMinimo(PONT raiz)
 {
     if (raiz == NULL)
         return;
@@ -673,7 +673,7 @@ int getMenorValor(PONT raiz)
     return raiz->chave;
 }
 
-int getMaiorValor(PONT raiz)
+int encontrarMaximo(PONT raiz)
 {
     if (raiz == NULL)
         return;
@@ -772,14 +772,14 @@ void FuncoesAdicionais(PONT *raiz)
     // listarIntervalo(raiz, 10, 29);
 
     // contar folhas
-    int qtdF = contagemFolhas(*raiz);
+    int qtdF = contarFolhas(*raiz);
     printf("\n- O número de folhas é igual a %d.", qtdF);
 
     // encontrar menor e maior valor
-    int menor = getMenorValor(*raiz);
+    int menor = encontrarMinimo(*raiz);
     printf("\n- O menor valor é igual a %d.", menor);
 
-    int maior = getMaiorValor(*raiz);
+    int maior = encontrarMaximo(*raiz);
     printf("\n- O maior valor é igual a %d.", maior);
 
     // buscar K-esimo valor
