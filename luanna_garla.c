@@ -452,15 +452,16 @@ void inicializar(PONT *raiz)
 
 #pragma endregion Já existiam
 
+//Verifica se é AVL
 bool verificaAVL(PONT p)
 {
     int e, d;
     bool isAVL = true;
     if (p)
     {
-        isAVL = verificaAVL(p->esq);
+        isAVL = verificaAVL(p->esq); //verifica balanceamento à esquerda
         if (isAVL)
-            isAVL = verificaAVL(p->dir);
+            isAVL = verificaAVL(p->dir); //verifica balanceamento à direita
         if (isAVL)
         {
             e = altura(p->esq);
@@ -480,7 +481,7 @@ int contagemNos(PONT p)
 {
     if (p == NULL) // árvore vazia
         return 0;
-    return 1 + contagemNos(p->esq) + contagemNos(p->dir);
+    return 1 + contagemNos(p->esq) + contagemNos(p->dir); //primeiro conta todos pela esquerda, depois pela direita, soma recursiva
 }
 
 // Exibição por nível
@@ -507,7 +508,7 @@ void exibirArvorePorNivel(PONT raiz)
 
         if (nivelNo != nivelAtual)
         {
-            nivelAtual = nivelNo;
+            nivelAtual = nivelNo; //altera o nível após descer
             printf("\nNível %d: ", nivelAtual);
         }
 
@@ -532,6 +533,9 @@ void exibirArvorePorNivel(PONT raiz)
 // Exibição de um nível, dado um nó
 int getNivelPorNo(PONT raiz, int chave)
 {
+    //utilizei a mesma estrutura do anterior
+    //mas ao invés de printar, quando chega no valor desejado, retorna nível
+    
     if (raiz == NULL)
         return -1;
 
@@ -635,11 +639,6 @@ void exibirArvoreGrafica(PONT raiz)
     printf("\n");
 }
 
-// Listar em um intervalo [a,b]
-void listarIntervalo(PONT raiz, int a, int b)
-{
-}
-
 // Contagem das folhas
 int contarFolhas(PONT raiz)
 {
@@ -661,7 +660,7 @@ int somaValores(PONT raiz)
     return raiz->chave + somaValores(raiz->esq) + somaValores(raiz->dir);
 }
 
-//Achar o menor e maior valor
+// Achar o menor e maior valor
 int encontrarMinimo(PONT raiz)
 {
     if (raiz == NULL)
@@ -682,6 +681,21 @@ int encontrarMaximo(PONT raiz)
         raiz = raiz->dir;
 
     return raiz->chave;
+}
+
+// Listar em um intervalo [a,b]
+void listarIntervalo(PONT raiz, int a, int b)
+{
+}
+
+// Buscar k-ésimo
+int buscarKesimoMenor(PONT raiz, int k)
+{
+}
+
+//Verifica se dois valores estão no mesmo nível
+int mesmoNivel(PONT raiz, int x, int y)
+{
 }
 
 void FuncoesObrigatorias(PONT *raiz)
@@ -783,7 +797,7 @@ void FuncoesAdicionais(PONT *raiz)
     printf("\n- O maior valor é igual a %d.", maior);
 
     // buscar K-esimo valor
-
+    
     // verifica se dois valores estão no mesmo nível
 
     // soma valores da árvore
