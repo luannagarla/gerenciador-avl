@@ -533,7 +533,7 @@ void exibirArvorePorNivel(PONT raiz)
 int getNivelPorNo(PONT raiz, int chave)
 {
     if (raiz == NULL)
-        return;
+        return -1;
 
     PONT fila[100];
     int nivel[100];
@@ -569,6 +569,77 @@ int getNivelPorNo(PONT raiz, int chave)
             fila[fim] = atual->dir;
             nivel[fim++] = nivelNo + 1;
         }
+    }
+
+    return -1;
+}
+
+// Exibição GRÁFICA
+void exibirArvoreGrafica(PONT raiz)
+{
+    if (raiz == NULL)
+        return;
+
+    PONT fila[100];
+    int nivel[100];
+    int inicio = 0;
+    int fim = 0;
+
+    fila[fim] = raiz;
+    nivel[fim++] = 0;
+
+    int nivelAtual = 0;
+    int espacos = 20; 
+
+    while (inicio < fim)
+    {
+        int elementosNesteNivel = 0;
+        int i = inicio;
+        while (i < fim && nivel[i] == nivelAtual)
+        {
+            elementosNesteNivel++;
+            i++;
+        }
+
+        // espaços no console para dar uma impressão mais gráfica
+        for (int i = 0; i < espacos; i++) printf(" ");
+
+        for (int j = 0; j < elementosNesteNivel; j++)
+        {
+            PONT atual = fila[inicio];
+            int nivelNo = nivel[inicio++];
+
+            printf("%2d", atual->chave);  // imprime a chave
+
+            for (int i = 0; i < espacos * 2 - 2; i++) printf(" ");
+
+            // Enfileira os filhos com o próximo nível
+            if (atual->esq != NULL)
+            {
+                fila[fim] = atual->esq;
+                nivel[fim++] = nivelNo + 1;
+            }
+            else
+            {
+                fila[fim] = NULL;
+                nivel[fim++] = nivelNo + 1;
+            }
+
+            if (atual->dir != NULL)
+            {
+                fila[fim] = atual->dir;
+                nivel[fim++] = nivelNo + 1;
+            }
+            else
+            {
+                fila[fim] = NULL;
+                nivel[fim++] = nivelNo + 1;
+            }
+        }
+
+        printf("\n");
+        espacos /= 2;  // reduz o espaçamento para o próximo nível
+        nivelAtual++;
     }
 
     printf("\n");
@@ -620,6 +691,9 @@ void FuncoesObrigatorias(PONT *raiz)
     exibirArvorePorNivel(*raiz);
 
     // Impressão gráfica
+    printf("\nImpressão gráfica: \n");
+    exibirArvoreGrafica(*raiz);
+    printf("\n");
 
     // Cálculo da altura
     int alt = altura(*raiz);
@@ -638,7 +712,10 @@ void FuncoesObrigatorias(PONT *raiz)
     // Impressão do nível de um nó
     int valor = 29;
     int nivel = getNivelPorNo(*raiz, valor);
-    printf("Nível do nó %d é %d", valor, nivel);
+    if(nivel == -1)
+        printf("Nível do nó %d é igual a %d.", valor, nivel);
+    else
+        printf("Nó não encontrado.");
 }
 
 int main()
