@@ -466,14 +466,14 @@ bool verificaAVL(PONT p)
         {
             e = altura(p->esq);
             d = altura(p->dir);
-            if (e - d > 1 || e - d < -1)
+            if (e - d > 1 || e - d < -1) // confere a diferença das alturas
                 isAVL = false;
             else
                 isAVL = true;
         }
     }
 
-    return (isAVL);
+    return isAVL;
 }
 
 // Contagem dos nós
@@ -499,7 +499,7 @@ void exibirArvorePorNivel(PONT raiz)
     nivel[fim++] = 0;
 
     int nivelAtual = 0;
-    printf("\nNível %d: ", nivelAtual);
+    printf("\nNível %d: ", nivelAtual); // print primeiro nível
 
     while (inicio < fim)
     {
@@ -514,13 +514,13 @@ void exibirArvorePorNivel(PONT raiz)
 
         printf("%d ", atual->chave);
 
-        if (atual->esq != NULL)
+        if (atual->esq != NULL) // se diferente de null, desce para esquerda
         {
             fila[fim] = atual->esq;
             nivel[fim++] = nivelNo + 1;
         }
 
-        if (atual->dir != NULL)
+        if (atual->dir != NULL) // se diferente de null, desce para direita
         {
             fila[fim] = atual->dir;
             nivel[fim++] = nivelNo + 1;
@@ -585,20 +585,23 @@ void exibirArvoreGrafica(PONT raiz)
         return;
 
     PONT fila[100];
+
+    // array para controlar o nível de cada nó
     int nivel[100];
-    int inicio = 0;
-    int fim = 0;
+    int inicio = 0, fim = 0;
 
     fila[fim] = raiz;
     nivel[fim++] = 0;
 
     int nivelAtual = 0;
-    int espacos = 20;
+    int espacos = 20; // espaçamento para formatar a visualização
 
     while (inicio < fim)
     {
         int elementosNesteNivel = 0;
         int i = inicio;
+
+        // contagem de quantos elementos estão no mesmo nível
         while (i < fim && nivel[i] == nivelAtual)
         {
             elementosNesteNivel++;
@@ -606,8 +609,9 @@ void exibirArvoreGrafica(PONT raiz)
         }
 
         for (int i = 0; i < espacos; i++)
-            printf(" ");
+            printf(" "); // print do espaçamento
 
+        // Exibe os nós do nível atual
         for (int j = 0; j < elementosNesteNivel; j++)
         {
             PONT atual = fila[inicio];
@@ -618,6 +622,7 @@ void exibirArvoreGrafica(PONT raiz)
             for (int i = 0; i < espacos * 2 - 2; i++)
                 printf(" ");
 
+            // Enfileira os filhos
             if (atual->esq != NULL)
             {
                 fila[fim] = atual->esq;
@@ -631,7 +636,10 @@ void exibirArvoreGrafica(PONT raiz)
             }
         }
 
+        // Fim da linha atual
         printf("\n");
+
+        // Diminui o espaçamento para os próximos níveis
         espacos /= 2;
         nivelAtual++;
     }
@@ -667,7 +675,7 @@ int encontrarMinimo(PONT raiz)
         return -1;
 
     while (raiz->esq != NULL)
-        raiz = raiz->esq;
+        raiz = raiz->esq; // desce para esquerda
 
     return raiz->chave;
 }
@@ -678,7 +686,7 @@ int encontrarMaximo(PONT raiz)
         return -1;
 
     while (raiz->dir != NULL)
-        raiz = raiz->dir;
+        raiz = raiz->dir; // desce para direita
 
     return raiz->chave;
 }
@@ -689,15 +697,15 @@ void listarIntervalo(PONT raiz, int a, int b)
     if (raiz == NULL)
         return;
 
-    // Se a chave pode estar na subárvore esquerda
+    // pode estar na subárvore esquerda
     if (raiz->chave > a)
         listarIntervalo(raiz->esq, a, b);
 
-    // Se a chave está dentro do intervalo, imprime
+    // se dentro do intervalo, imprime
     if (raiz->chave >= a && raiz->chave <= b)
         printf("%d ", raiz->chave);
 
-    // Se a chave pode estar na subárvore direita
+    // pode estar na subárvore direita
     if (raiz->chave < b)
         listarIntervalo(raiz->dir, a, b);
 }
@@ -708,17 +716,17 @@ int buscarKesimoMenor(PONT raiz, int contador, int k)
     if (raiz == NULL)
         return -1;
 
-    // Percorre à esquerda
+    // percorre à esquerda
     int resultado = buscarKesimoMenor(raiz->esq, contador, k);
     if (resultado != -1)
         return resultado;
 
-    // Visita o nó atual
+    //incrementa contador auxiliar para comparar com o valor de K
     contador++;
     if (contador == k)
         return raiz->chave;
 
-    // Percorre à direita
+    // percorre à direita
     return buscarKesimoMenor(raiz->dir, contador, k);
 }
 
@@ -878,7 +886,7 @@ void FuncoesAdicionais(PONT *raiz)
     printf("\n- O maior valor é igual a %d.", maior);
 
     // buscar K-esimo menor valor
-    int k = 2; //segundo menor
+    int k = 2; // segundo menor
     int kesimo = buscarKesimoMenor(*raiz, 0, k);
     if (kesimo != -1)
         printf("\n- O %dº menor valor da árvore é: %d", k, kesimo);
