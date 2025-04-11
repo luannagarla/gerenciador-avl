@@ -689,22 +689,43 @@ void listarIntervalo(PONT raiz, int a, int b)
     if (raiz == NULL)
         return;
 
-    if (raiz->chave <= a)
-    {
-        exibirArvoreEmOrdem(raiz->esq);
-        printf("%i ", raiz->chave);
-    }
+    // Se a chave pode estar na subárvore esquerda
+    if (raiz->chave > a)
+        listarIntervalo(raiz->esq, a, b);
 
-    if (raiz->chave >= b)
-    {
-        exibirArvoreEmOrdem(raiz->dir);
-        printf("%i ", raiz->chave);
-    }
+    // Se a chave está dentro do intervalo, imprime
+    if (raiz->chave >= a && raiz->chave <= b)
+        printf("%d ", raiz->chave);
+
+    // Se a chave pode estar na subárvore direita
+    if (raiz->chave < b)
+        listarIntervalo(raiz->dir, a, b);
 }
 
-// Buscar k-ésimo
+// Buscar k-ésimo menor
+int buscarKesimoMenorAux(PONT raiz, int* contador, int k)
+{
+    if (raiz == NULL)
+        return -1;
+
+    // Percorre à esquerda
+    int resultado = buscarKesimoMenorAux(raiz->esq, contador, k);
+    if (resultado != -1)
+        return resultado;
+
+    // Visita o nó atual
+    (*contador)++;
+    if (*contador == k)
+        return raiz->chave;
+
+    // Percorre à direita
+    return buscarKesimoMenorAux(raiz->dir, contador, k);
+}
+
 int buscarKesimoMenor(PONT raiz, int k)
 {
+    int cntAux = 0;
+    return buscarKesimoMenorAux(raiz, &cntAux, k);
 }
 
 // Verifica se dois valores estão no mesmo nível
@@ -862,7 +883,13 @@ void FuncoesAdicionais(PONT *raiz)
     int maior = encontrarMaximo(*raiz);
     printf("\n- O maior valor é igual a %d.", maior);
 
-    // buscar K-esimo valor
+    // buscar K-esimo menor valor
+    int k = 4;
+    int kesimo = buscarKesimoMenor(raiz, k);
+    if (kesimo != -1)
+        printf("\nO %dº menor valor da árvore é: %d\n", k, kesimo);
+    else
+        printf("\nNão foi possível encontrar o %dº menor valor.\n", k);
 
     // verifica se dois valores estão no mesmo nível
     int valor1 = 29;
