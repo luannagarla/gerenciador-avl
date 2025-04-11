@@ -490,7 +490,8 @@ void exibirArvorePorNivel(PONT raiz)
     if (raiz == NULL)
         return;
 
-    PONT fila[100]; // fila auxiliar
+    int qtdNos = contagemNos(raiz);
+    PONT fila[qtdNos]; // fila auxiliar
     int nivel[100];
     int inicio = 0;
     int fim = 0;
@@ -539,7 +540,8 @@ int getNivelPorNo(PONT raiz, int chave)
     if (raiz == NULL)
         return -1;
 
-    PONT fila[100];
+    int qtdNos = contagemNos(raiz);
+    PONT fila[qtdNos];
     int nivel[100];
     int inicio = 0;
     int fim = 0;
@@ -584,7 +586,8 @@ void exibirArvoreGrafica(PONT raiz)
     if (raiz == NULL)
         return;
 
-    PONT fila[100];
+    int qtdNos = contagemNos(raiz);
+    PONT fila[qtdNos];
 
     // array para controlar o nível de cada nó
     int nivel[100];
@@ -711,23 +714,20 @@ void listarIntervalo(PONT raiz, int a, int b)
 }
 
 // Buscar k-ésimo menor
-int buscarKesimoMenor(PONT raiz, int contador, int k)
+int buscarKesimoMenor(PONT raiz, int k)
 {
     if (raiz == NULL)
         return -1;
 
-    // percorre à esquerda
-    int resultado = buscarKesimoMenor(raiz->esq, contador, k);
-    if (resultado != -1)
-        return resultado;
+    int qtdNos = contagemNos(raiz);
+    int contAux = qtdNos - k;
 
-    //incrementa contador auxiliar para comparar com o valor de K
-    contador++;
-    if (contador == k)
-        return raiz->chave;
+    while (contAux < 0)
+    {
+        contAux--;
 
-    // percorre à direita
-    return buscarKesimoMenor(raiz->dir, contador, k);
+        buscarKesimoMenor(raiz->dir, k);
+    }
 }
 
 // Verifica se dois valores estão no mesmo nível
@@ -739,7 +739,8 @@ int mesmoNivel(PONT raiz, int x, int y)
     if (raiz == NULL)
         return -1;
 
-    PONT fila[100];
+    int qtdNos = contagemNos(raiz);
+    PONT fila[qtdNos];
     int nivel[100];
     int inicio = 0;
     int fim = 0;
@@ -886,8 +887,8 @@ void FuncoesAdicionais(PONT *raiz)
     printf("\n- O maior valor é igual a %d.", maior);
 
     // buscar K-esimo menor valor
-    int k = 2; // segundo menor
-    int kesimo = buscarKesimoMenor(*raiz, 0, k);
+    int k = 4; // segundo menor
+    int kesimo = buscarKesimoMenor(*raiz, k);
     if (kesimo != -1)
         printf("\n- O %dº menor valor da árvore é: %d", k, kesimo);
     else
