@@ -703,29 +703,23 @@ void listarIntervalo(PONT raiz, int a, int b)
 }
 
 // Buscar k-ésimo menor
-int buscarKesimoMenorAux(PONT raiz, int* contador, int k)
+int buscarKesimoMenor(PONT raiz, int contador, int k)
 {
     if (raiz == NULL)
         return -1;
 
     // Percorre à esquerda
-    int resultado = buscarKesimoMenorAux(raiz->esq, contador, k);
+    int resultado = buscarKesimoMenor(raiz->esq, contador, k);
     if (resultado != -1)
         return resultado;
 
     // Visita o nó atual
-    (*contador)++;
-    if (*contador == k)
+    contador++;
+    if (contador == k)
         return raiz->chave;
 
     // Percorre à direita
-    return buscarKesimoMenorAux(raiz->dir, contador, k);
-}
-
-int buscarKesimoMenor(PONT raiz, int k)
-{
-    int cntAux = 0;
-    return buscarKesimoMenorAux(raiz, &cntAux, k);
+    return buscarKesimoMenor(raiz->dir, contador, k);
 }
 
 // Verifica se dois valores estão no mesmo nível
@@ -827,7 +821,7 @@ void FuncoesObrigatorias(PONT *raiz)
     printf("\nÁrvore em ordem: ");
     exibirArvoreEmOrdem(*raiz);
 
-    //Exibir normal
+    // Exibir normal
     printf("\nÁrvore (filhos): ");
     exibirArvore(*raiz);
 
@@ -884,12 +878,12 @@ void FuncoesAdicionais(PONT *raiz)
     printf("\n- O maior valor é igual a %d.", maior);
 
     // buscar K-esimo menor valor
-    int k = 4;
-    int kesimo = buscarKesimoMenor(raiz, k);
+    int k = 2; //segundo menor
+    int kesimo = buscarKesimoMenor(*raiz, 0, k);
     if (kesimo != -1)
-        printf("\nO %dº menor valor da árvore é: %d\n", k, kesimo);
+        printf("\n- O %dº menor valor da árvore é: %d", k, kesimo);
     else
-        printf("\nNão foi possível encontrar o %dº menor valor.\n", k);
+        printf("\n- Não foi possível encontrar o %dº menor valor.", k);
 
     // verifica se dois valores estão no mesmo nível
     int valor1 = 29;
