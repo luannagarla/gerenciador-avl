@@ -452,16 +452,16 @@ void inicializar(PONT *raiz)
 
 #pragma endregion Já existiam
 
-//Verifica se é AVL
+// Verifica se é AVL
 bool verificaAVL(PONT p)
 {
     int e, d;
     bool isAVL = true;
     if (p)
     {
-        isAVL = verificaAVL(p->esq); //verifica balanceamento à esquerda
+        isAVL = verificaAVL(p->esq); // verifica balanceamento à esquerda
         if (isAVL)
-            isAVL = verificaAVL(p->dir); //verifica balanceamento à direita
+            isAVL = verificaAVL(p->dir); // verifica balanceamento à direita
         if (isAVL)
         {
             e = altura(p->esq);
@@ -481,7 +481,7 @@ int contagemNos(PONT p)
 {
     if (p == NULL) // árvore vazia
         return 0;
-    return 1 + contagemNos(p->esq) + contagemNos(p->dir); //primeiro conta todos pela esquerda, depois pela direita, soma recursiva
+    return 1 + contagemNos(p->esq) + contagemNos(p->dir); // primeiro conta todos pela esquerda, depois pela direita, soma recursiva
 }
 
 // Exibição por nível
@@ -508,7 +508,7 @@ void exibirArvorePorNivel(PONT raiz)
 
         if (nivelNo != nivelAtual)
         {
-            nivelAtual = nivelNo; //altera o nível após descer
+            nivelAtual = nivelNo; // altera o nível após descer
             printf("\nNível %d: ", nivelAtual);
         }
 
@@ -533,9 +533,9 @@ void exibirArvorePorNivel(PONT raiz)
 // Exibição de um nível, dado um nó
 int getNivelPorNo(PONT raiz, int chave)
 {
-    //utilizei a mesma estrutura do anterior
-    //mas ao invés de printar, quando chega no valor desejado, retorna nível
-    
+    // utilizei a mesma estrutura do anterior
+    // mas ao invés de printar, quando chega no valor desejado, retorna nível
+
     if (raiz == NULL)
         return -1;
 
@@ -686,6 +686,11 @@ int encontrarMaximo(PONT raiz)
 // Listar em um intervalo [a,b]
 void listarIntervalo(PONT raiz, int a, int b)
 {
+    if (raiz == NULL)
+        return;
+    exibirArvoreEmOrdem(raiz->esq);
+    printf("%i ", raiz->chave);
+    exibirArvoreEmOrdem(raiz->dir);
 }
 
 // Buscar k-ésimo
@@ -693,9 +698,56 @@ int buscarKesimoMenor(PONT raiz, int k)
 {
 }
 
-//Verifica se dois valores estão no mesmo nível
+// Verifica se dois valores estão no mesmo nível
 int mesmoNivel(PONT raiz, int x, int y)
 {
+    // utilizei a mesma estrutura do getNivelPorNO
+    // registrando os valores do níveis afim de comparar
+
+    if (raiz == NULL)
+        return -1;
+
+    PONT fila[100];
+    int nivel[100];
+    int inicio = 0;
+    int fim = 0;
+
+    fila[fim] = raiz;
+    nivel[fim++] = 0;
+
+    int nivelAtual = 0, nivelX = 0, nivelY = 0;
+
+    while (inicio < fim)
+    {
+        PONT atual = fila[inicio];
+        int nivelNo = nivel[inicio++];
+
+        if (nivelNo != nivelAtual)
+            nivelAtual = nivelNo;
+
+        if (atual->chave == x)
+            nivelX = nivelAtual;
+
+        if (atual->chave == y)
+            nivelY = nivelAtual;
+
+        if (nivelY != 0 && nivelX != 0)
+            return nivelY == nivelX ? nivelAtual : -1;
+
+        if (atual->esq != NULL)
+        {
+            fila[fim] = atual->esq;
+            nivel[fim++] = nivelNo + 1;
+        }
+
+        if (atual->dir != NULL)
+        {
+            fila[fim] = atual->dir;
+            nivel[fim++] = nivelNo + 1;
+        }
+    }
+
+    return nivelY == nivelX ? nivelAtual : -1;
 }
 
 void FuncoesObrigatorias(PONT *raiz)
@@ -782,8 +834,8 @@ void FuncoesAdicionais(PONT *raiz)
     printf("\n\n\n=============== funções adicionais  ===============\n");
 
     // listagem de elementos no intervalo
-    // printf("\nListar em um intervalo (10-29):\n");
-    // listarIntervalo(raiz, 10, 29);
+    printf("\nListar em um intervalo (10-29):\n");
+    listarIntervalo(*raiz, 10, 29);
 
     // contar folhas
     int qtdF = contarFolhas(*raiz);
@@ -797,8 +849,16 @@ void FuncoesAdicionais(PONT *raiz)
     printf("\n- O maior valor é igual a %d.", maior);
 
     // buscar K-esimo valor
-    
+
     // verifica se dois valores estão no mesmo nível
+    int valor1 = 29;
+    int valor2 = 13;
+    int nivelEncontrado = mesmoNivel(*raiz, valor1, valor2);
+
+    if (nivelEncontrado == -1)
+        printf("\n- O valor %d e %d NÃO estão no mesmo nível.", valor1, valor2);
+    else
+        printf("\n- O valor %d e %d estão no mesmo nível (Nível %d).", valor1, valor2, nivelEncontrado);
 
     // soma valores da árvore
     int soma = somaValores(*raiz);
