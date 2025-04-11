@@ -664,7 +664,7 @@ int somaValores(PONT raiz)
 int encontrarMinimo(PONT raiz)
 {
     if (raiz == NULL)
-        return;
+        return -1;
 
     while (raiz->esq != NULL)
         raiz = raiz->esq;
@@ -675,7 +675,7 @@ int encontrarMinimo(PONT raiz)
 int encontrarMaximo(PONT raiz)
 {
     if (raiz == NULL)
-        return;
+        return -1;
 
     while (raiz->dir != NULL)
         raiz = raiz->dir;
@@ -688,9 +688,18 @@ void listarIntervalo(PONT raiz, int a, int b)
 {
     if (raiz == NULL)
         return;
-    exibirArvoreEmOrdem(raiz->esq);
-    printf("%i ", raiz->chave);
-    exibirArvoreEmOrdem(raiz->dir);
+
+    if (raiz->chave <= a)
+    {
+        exibirArvoreEmOrdem(raiz->esq);
+        printf("%i ", raiz->chave);
+    }
+
+    if (raiz->chave >= b)
+    {
+        exibirArvoreEmOrdem(raiz->dir);
+        printf("%i ", raiz->chave);
+    }
 }
 
 // Buscar k-ésimo
@@ -756,7 +765,7 @@ void FuncoesObrigatorias(PONT *raiz)
     bool alterou;
 
     // Inserção
-    printf("\nInserindo os valores 29, 56, 21, 8, 3, 19, 7, 1, 10, 13, 45\n");
+    printf("\nInserindo os valores 29, 56, 21, 8, 3, 19, 7, 1, 10, 13, 45:\n\n");
     inserirAVL(raiz, 29, &alterou);
     inserirAVL(raiz, 56, &alterou);
     inserirAVL(raiz, 21, &alterou);
@@ -770,7 +779,7 @@ void FuncoesObrigatorias(PONT *raiz)
     inserirAVL(raiz, 45, &alterou);
 
     // Exclusão
-    printf("\nExlcuindo os valores 21, 56\n");
+    printf("\nExlcuindo os valores 21, 56:\n\n");
     excluirAVL(raiz, 21, &alterou);
     excluirAVL(raiz, 56, &alterou);
 
@@ -796,6 +805,10 @@ void FuncoesObrigatorias(PONT *raiz)
     // Exibir em ordem
     printf("\nÁrvore em ordem: ");
     exibirArvoreEmOrdem(*raiz);
+
+    //Exibir normal
+    printf("\nÁrvore (filhos): ");
+    exibirArvore(*raiz);
 
     // Exibir em nível
     printf("\n\nÁrvore por nível: ");
@@ -823,10 +836,10 @@ void FuncoesObrigatorias(PONT *raiz)
     // Impressão do nível de um nó
     int valor = 29;
     int nivel = getNivelPorNo(*raiz, valor);
-    if (nivel == -1)
+    if (nivel != -1)
         printf("Nível do nó %d é igual a %d.", valor, nivel);
     else
-        printf("Nó não encontrado.");
+        printf("Nó %d não encontrado.", valor);
 }
 
 void FuncoesAdicionais(PONT *raiz)
@@ -836,6 +849,7 @@ void FuncoesAdicionais(PONT *raiz)
     // listagem de elementos no intervalo
     printf("\nListar em um intervalo (10-29):\n");
     listarIntervalo(*raiz, 10, 29);
+    printf("\n");
 
     // contar folhas
     int qtdF = contarFolhas(*raiz);
