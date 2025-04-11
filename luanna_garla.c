@@ -714,20 +714,29 @@ void listarIntervalo(PONT raiz, int a, int b)
 }
 
 // Buscar k-ésimo menor
-int buscarKesimoMenor(PONT raiz, int k)
+void preencherInOrdem(PONT raiz, int* vetor, int* idx)
 {
     if (raiz == NULL)
+        return;
+
+    preencherInOrdem(raiz->esq, vetor, idx);
+    vetor[(*idx)++] = raiz->chave;
+    preencherInOrdem(raiz->dir, vetor, idx);
+    //adiciona os valores em uma matriz in order
+}
+
+int buscarKesimoMenor(PONT raiz, int k)
+{
+    int qtd = contagemNos(raiz);
+    if (k < 1 || k > qtd)
         return -1;
 
-    int qtdNos = contagemNos(raiz);
-    int contAux = qtdNos - k;
+    int vetor[qtd];
+    int idx = 0;
 
-    while (contAux < 0)
-    {
-        contAux--;
-
-        buscarKesimoMenor(raiz->dir, k);
-    }
+    preencherInOrdem(raiz, vetor, &idx);
+    //retorna o K menor
+    return vetor[k - 1];
 }
 
 // Verifica se dois valores estão no mesmo nível
@@ -887,7 +896,7 @@ void FuncoesAdicionais(PONT *raiz)
     printf("\n- O maior valor é igual a %d.", maior);
 
     // buscar K-esimo menor valor
-    int k = 4; // segundo menor
+    int k = 3; // terceiro menor
     int kesimo = buscarKesimoMenor(*raiz, k);
     if (kesimo != -1)
         printf("\n- O %dº menor valor da árvore é: %d", k, kesimo);
